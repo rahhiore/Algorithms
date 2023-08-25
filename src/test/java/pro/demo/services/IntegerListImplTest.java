@@ -162,10 +162,13 @@ class IntegerListImplTest {
         integerList.randomArrays();
         IntegerListImpl integerList2 = new IntegerListImpl(Arrays.asList(integerList.toArray()));
         IntegerListImpl integerList3 = new IntegerListImpl(Arrays.asList(integerList.toArray()));
+        IntegerListImpl integerList4 = new IntegerListImpl(Arrays.asList(integerList.toArray()));
         integerList.sortBubble();
         integerList2.sortSelection();
         integerList3.sortInsertion();
+        integerList4.quickSort();
         assertEquals(Arrays.toString(integerList2.toArray()), Arrays.toString(integerList.toArray()));
         assertEquals(Arrays.toString(integerList2.toArray()), Arrays.toString(integerList3.toArray()));
+        assertEquals(Arrays.toString(integerList4.toArray()), Arrays.toString(integerList3.toArray()));
     }
 }

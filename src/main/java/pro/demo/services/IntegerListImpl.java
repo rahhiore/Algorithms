@@ -1,5 +1,6 @@
 package pro.demo.services;
 
+import org.springframework.http.converter.ObjectToStringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import pro.demo.Exceptions.ElementNotFound;
 import pro.demo.Exceptions.IndexOutOfRange;
@@ -7,6 +8,7 @@ import pro.demo.Exceptions.NullPointerException;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
 
@@ -28,7 +30,7 @@ public class IntegerListImpl implements IntegerList {
     @Override
     public Integer add(Integer item) {
         if (size == elements.length) {
-            ensureCapa();
+            grow();
         }
         if (item == null) {
             throw new NullPointerException();
@@ -39,7 +41,7 @@ public class IntegerListImpl implements IntegerList {
     @Override
     public Integer add(int index, Integer item) {
         if (size == elements.length) {
-            ensureCapa();
+            grow();
         }
         if (item == null) {
             throw new NullPointerException();
@@ -208,6 +210,8 @@ public class IntegerListImpl implements IntegerList {
         }
         System.out.println(System.currentTimeMillis() - start);
     }
+
+
     public void sortInsertion() {
         long start = System.currentTimeMillis();
         for (int i = 1; i < size; i++) {
@@ -221,6 +225,38 @@ public class IntegerListImpl implements IntegerList {
         }
         System.out.println(System.currentTimeMillis() - start);
     }
+
+
+    public void quickSort() {
+        long start = System.currentTimeMillis();
+        Object[] arr = elements.clone();
+        sorting(arr, 0, size-1);
+        System.out.println(System.currentTimeMillis() - start);
+
+    }
+    private void sorting(Object[] arr, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(elements, begin, end);
+            sorting(arr, begin, partitionIndex - 1);
+            sorting(arr, partitionIndex + 1, end);
+        }
+
+    }
+
+    private int partition(Object[] arr, int begin, int end) {
+        Integer pivot = (Integer)arr[end];
+        int i = (begin - 1);
+        for (int j = begin; j < end; j++) {
+            if ((Integer)arr[j] <= pivot) {
+                i++;
+                swapElements(arr, i, j);
+            }
+        }
+        swapElements(arr, i + 1, end);
+        elements = arr.clone();
+        return i + 1;
+    }
+
     @Override
     public boolean contains(Integer item) {
         long start = System.currentTimeMillis();
@@ -249,15 +285,15 @@ public class IntegerListImpl implements IntegerList {
         arr[indexB] = tmp;
     }
 
-    private void ensureCapa() {
-        int newSize = elements.length * 2;
+    private void grow() {
+        int newSize = (int) (elements.length * 1.5);
         elements = Arrays.copyOf(elements, newSize);
     }
     @Override
     public void randomArrays() {
         Random rd = new Random();
         for (size = 0; size < DEFAULT_CAPACITY; size++) {
-            elements[size] = rd.nextInt();
+            elements[size] = rd.nextInt((DEFAULT_CAPACITY) + 1) + DEFAULT_CAPACITY;
         }
     }
 }

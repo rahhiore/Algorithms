@@ -81,7 +81,7 @@ public class IntegerListController {
     }
     @GetMapping("/sort")
     public String sort() {
-        integerList.sortSelection();
+        integerList.quickSort();
         return "List sorted";
     }
     @GetMapping("/generate")

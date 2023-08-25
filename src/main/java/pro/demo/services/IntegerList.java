@@ -83,7 +83,7 @@ public interface IntegerList {
     void sortSelection();
 
     void sortInsertion();
-
+    void quickSort();
     void randomArrays();
 
 }
